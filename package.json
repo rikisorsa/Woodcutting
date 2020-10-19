@@ -1,0 +1,23 @@
+{
+  "name": "Woodcutting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rikisorsa/Woodcutting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rikisorsa/Woodcutting/issues"
+  },
+  "homepage": "https://github.com/rikisorsa/Woodcutting#readme",
+  "dependencies": {
+    "robotjs": "^0.6.0"
+  }
+}
