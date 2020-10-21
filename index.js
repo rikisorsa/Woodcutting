@@ -15,7 +15,7 @@ function main() {
         //chops down tree found
         robot.moveMouse(tree.x, tree.y);
         robot.mouseClick();
-        sleep(8000);
+        sleep(3000);
 
         dropLogs();
 
@@ -25,12 +25,33 @@ function main() {
 function dropLogs() {
     var inventory_x = 1842;
     var inventory_y = 757;
+    var inventory_log_color = ["424320", "7a5d39"];
+
+    var pixel_color = robot.getPixelColor(inventory_x, inventory_y);
+    //console.log("inventory log color is:" + pixel_color);
+
+    var wait_cycles = 0;
+    var max_wait_cycle = 9;
+    while (pixel_color != inventory_log_color && wait_cycles < max_wait_cycle) {
+        //waiting for chopping to finish
+        sleep(1000);
+        //sample the pixel color
+        pixel_color = robot.getPixelColor(inventory_x, inventory_y);
+        //increment our counter
+        wait_cycles++;
+
+
+    }
+
     //drop logs from inventory
+    if (pixel_color == inventory_log_color) {
     robot.moveMouse(inventory_x, inventory_y);
     robot.mouseClick('right');
+    sleep(500);
     robot.moveMouse(inventory_x, inventory_y + 70);
     robot.mouseClick();
     sleep(1000);
+    }
 }
 
 function testScreenCapture() {
@@ -57,8 +78,13 @@ function findTree() {
             var screen_x = random_x + x;
             var screen_y = random_y + y;
 
+            if (confirmTree(screen_x, screen_y)) {
             console.log("found a tree at" + screen_x + "," + screen_y + "color" + sample_color);
-            return { x: screen_x, y: screen_y };
+            return { x: screen_x, y: screen_y};
+            }
+            else{
+                console.log("Unconfirmed  tree at " + screen_x + ", " + screen_y + "color " + sample_color);
+            }
         }
     }
 
@@ -72,6 +98,21 @@ function rotateCamera() {
     sleep(1000);
     robot.keyToggle("right", "up");
 }
+
+function confirmTree(screen_x, screen_y) {
+    //first move mouse to given cordinates
+    robot.moveMouse(screen_x, screen_y);
+    //wait a moment 
+    sleep(300);
+
+    //check color of tree text
+    var check_x = 80;
+    var check_y = 60;
+    var pixel_color = robot.getPixelColor(check_x, check_y);
+
+    return pixel_color == "00ffff";
+    
+}   
 
 function sleep(ms) {
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
